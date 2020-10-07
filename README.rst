@@ -53,8 +53,28 @@ Functions
    - RETURNS: ``int`` count of result.
 
 - ``t_list              ft_lstlast(t_list *lst);``
+
+   - descriptions: Point last element from lst.
+   - external functs: None
+   - returns: ``t_list`` which next is NULL.
+
 - ``void                ft_lstadd_back(t_list **lst, t_list *new);``
+
+   - descriptions: Adds the element come from parameter ``new`` to end of ``lst``.
+   - external functs: None
+   - returns: None
+
 - ``void                ft_lstdelone(t_list *lst, void (*del)(void *));``
+
+   - descriptions: argument lst is target element to free. ``del`` is function pointer used to delete content of the element. next must not be freed.
+   - external functs: ``free``
+   - returns: None
+
 - ``void                ft_lstclear(t_list **lst, void (*del)(void *));``
+
+   - descriptions: Deletes and frees given element and every successors of that element. the pointer to a list must be set to NULL at last.
+   - external functs: ``free``
+   - returns: None
+
 - ``void                ft_lstiter(t_list *lst, void (*f)(void *));`` 
 - ``t_list              *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));``

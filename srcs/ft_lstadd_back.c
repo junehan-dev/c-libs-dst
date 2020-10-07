@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/06 17:35:48 by jihhan            #+#    #+#             */
-/*   Updated: 2020/10/06 17:40:56 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/10/07 10:41:22 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ void                ft_lstadd_back(t_list **lst, t_list *new);
     while (*lst_pt)
         lst_pt++;
 
-    *lst_pt++ = new;
-    *lst_pt = NULL;
+    *lst_pt = new;
+    *(lst_pt + 1) = NULL;
 }

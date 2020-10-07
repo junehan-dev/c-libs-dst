@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 16:01:22 by jihhan            #+#    #+#             */
-/*   Updated: 2020/09/24 16:05:34 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/10/07 10:02:14 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_list              ft_lstlast(t_list *lst)
 {
-    t_list      lst_pt;
+    t_list      *lst_pt;
 
     if (!lst)
         return (NULL);
