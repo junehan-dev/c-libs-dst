@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 09:23:56 by jihhan            #+#    #+#             */
-/*   Updated: 2020/10/12 18:43:57 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/10/12 18:53:27 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ t_list              *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void
     int         i;
 
     lst_pt = lst;
-    lst_arr = (t_list *)malloc(sizeof(t_list) * ft_lstsize(lst) + 1);
+    lst_arr = (t_list **)malloc(sizeof(t_list *) * (ft_lstsize(lst) + 1));
 
-    if (!lst_arr)
+    if (!lst_arr || !lst)
         return (NULL);
 
     while (lst_pt)

@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 15:33:38 by jihhan            #+#    #+#             */
-/*   Updated: 2020/10/07 10:43:52 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/10/12 19:04:33 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void                ft_lstadd_front(t_list **lst, t_list *new)
 
     while (next)
     {
-        temp = *lst_pt
+        temp = *lst_pt;
         *lst_pt = next;
         next = temp;
         lst_pt++;
