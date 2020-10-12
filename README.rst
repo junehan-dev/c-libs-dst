@@ -77,4 +77,13 @@ Functions
    - returns: None
 
 - ``void                ft_lstiter(t_list *lst, void (*f)(void *));`` 
+
+   - descriptions: Deletes and frees given element and every successors of that element. the pointer to a list must be set to NULL at last.
+   - external functs: ``free``
+   - returns: None
+
 - ``t_list              *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));``
+
+   - descriptions: iterates function ``f`` to each content to lst. and if needed ``del`` is used to delete content.
+   - external functs: ``malloc`` ``free``
+   - returns: malloc fail on ``NULL`` or ``lst``
