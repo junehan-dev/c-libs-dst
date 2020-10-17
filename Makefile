@@ -6,6 +6,7 @@ NAME				= s_list.a
 SOURCES				= $(wildcard srcs/*.c)
 HEADERS				= $(wildcard includes/*.h)
 OBJECTS				= $(patsubst %.c, %.o, $(SOURCES))
+TESTS				= $(wildcard tests/*.c)
 
 .PHONY: all
 all: $(NAME)
@@ -13,6 +14,12 @@ all: $(NAME)
 $(NAME): $(OBJECTS)
 	ar rcs $@ $(OBJECTS)
 	ranlib $@
+
+.PHONY: test
+test: $(TESTS)
+	$(CC) -Iincludes -Wall -Werror -Wextra tests/main.c $(NAME) -o tests/test.out
+	./tests/test.out
+	/bin/rm -f ./tests/test.out
 
 .PHONY: clean
 clean:
