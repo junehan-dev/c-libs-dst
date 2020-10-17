@@ -10,6 +10,12 @@ FT_S_LIST
 
 This project creates ``ft_s_list.a`` with below specifications.
 
+.. code-block:: bash
+
+   make         // make all
+   make test    // test and clean test.out
+   make clean   // left .a file
+
 PreProcessings
 --------------
 
