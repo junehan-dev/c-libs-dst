@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 13:05:09 by jihhan            #+#    #+#             */
-/*   Updated: 2020/10/07 18:45:01 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/10/19 18:46:28 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,5 @@ void                ft_lstiter(t_list *lst, void (*f)(void *))
     {
         f(lst_pt->content);
         lst_pt = lst_pt->next;
-        lst_pt++;
     }
 }

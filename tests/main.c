@@ -1,4 +1,5 @@
 #include <string.h>
+#include <ctype.h>
 #include <stdlib.h>
 #include "s_list.h"
 #include "dbg.h"
@@ -6,7 +7,10 @@
 t_list  *test_creat(void *content);
 int     test_delone(t_list *lst);
 void    del_content(void *);
-int test_lstsize(t_list *lst, size_t size);
+int     test_lstsize(t_list *lst, size_t size);
+void    test_lstiter(t_list *lst);
+void    to_upper(void *);
+
 
 int main(void)
 {
@@ -27,10 +31,60 @@ int main(void)
     end = end->next;
     end->next = ft_lstnew("lst_3");
     end = end->next;
+    test_lstiter(created);
     test_lstsize(created, 3);
 
     debug("TEST END---------");
     return (0);
+}
+
+void    to_upper(void *content)
+{
+    char *str;
+
+    str = (char *)content;
+    while (*str)
+    {
+        if (isalpha(*str) && islower(*str))
+            *str = toupper(*str);
+        str++;
+    }
+    debug("uppered string: %s", (char *)content);
+}
+
+void     check_upper(void *content)
+{
+    char    *str;
+    int     i;
+
+    i = 0;
+    str = (char *)content;
+    debug("check upper: %s", str);
+    while (*str)
+    {
+        if (isalpha(*str))
+        {
+            check(
+                (isupper(*str) != 0),
+                "1. iter not chaged content to upper"
+            );
+        }
+        i++;
+        str++;
+    }
+    debug("----FIN: test_iter:ft_lstiter----");
+    return;
+
+error:
+    debug("%d:'%c' is not upper!", i, *str);
+}
+
+
+void test_lstiter(t_list *lst)
+{
+    debug("----RUN: test_iter:ft_lstiter----");
+    ft_lstiter(lst, to_upper);
+    ft_lstiter(lst, check_upper);
 }
 
 int test_lstsize(t_list *lst, size_t size)
@@ -49,12 +103,14 @@ int test_lstsize(t_list *lst, size_t size)
     );
     debug("----FIN: test_size:ft_lstsize----");
 
-    while (cur)
+    while (cur->next)
     {
         free(cur);
         cur = next;
-        next = next->next;
+        next = cur->next;
     }
+    free(cur);
+
     return (0);
 
 error:
