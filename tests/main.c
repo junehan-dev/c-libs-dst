@@ -27,7 +27,6 @@ int main(void)
     end = end->next;
     end->next = ft_lstnew("lst_3");
     end = end->next;
-
     test_lstsize(created, 3);
 
     debug("TEST END---------");
@@ -37,19 +36,37 @@ int main(void)
 int test_lstsize(t_list *lst, size_t size)
 {
     int     ret;
+    t_list  *cur;
+    t_list  *next;
 
     debug("----RUN: test_size:ft_lstsize----");
+    cur = lst;
+    next = cur -> next;
     ret = ft_lstsize(lst);
     check(
         ((size_t)ret == size),
         "1. t_list length non equal."
     );
     debug("----FIN: test_size:ft_lstsize----");
+
+    while (cur)
+    {
+        free(cur);
+        cur = next;
+        next = next->next;
+    }
     return (0);
 
 error:
     debug("expected: %ld, actual: %d", size, ret);
     debug("----ERR: test_size:ft_lstsize----");
+
+    while (cur)
+    {
+        free(cur);
+        cur = next;
+        next = next->next;
+    }
     return (1);
 }
 
