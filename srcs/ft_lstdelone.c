@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 10:08:24 by jihhan            #+#    #+#             */
-/*   Updated: 2020/10/12 18:58:37 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/10/17 20:43:03 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,7 @@ void                ft_lstdelone(t_list *lst, void (*del)(void *))
         return;
 
     del(lst->content);
+    lst->content = NULL;
     free(lst);
+    lst = NULL;
 }

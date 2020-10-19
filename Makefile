@@ -17,7 +17,7 @@ $(NAME): $(OBJECTS)
 
 .PHONY: test
 test: $(TESTS)
-	$(CC) -Iincludes -Wall -Werror -Wextra tests/main.c $(NAME) -o tests/test.out
+	$(CC) -Wall -Werror -Wextra -Iincludes tests/main.c $(NAME) -o tests/test.out
 	./tests/test.out
 	/bin/rm -f ./tests/test.out
 
