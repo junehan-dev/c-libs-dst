@@ -6,10 +6,12 @@
 t_list  *test_creat(void *content);
 int     test_delone(t_list *lst);
 void    del_content(void *);
+int test_lstsize(t_list *lst, size_t size);
 
 int main(void)
 {
     t_list      *created;
+    t_list      *end;
 
     debug("TEST START---------");
 
@@ -19,8 +21,36 @@ int main(void)
     if(test_delone(created) == 1)
         exit(1);
 
+    created = ft_lstnew("lst_start");
+    end = created;
+    end->next = ft_lstnew("lst_2");
+    end = end->next;
+    end->next = ft_lstnew("lst_3");
+    end = end->next;
+
+    test_lstsize(created, 3);
+
     debug("TEST END---------");
     return (0);
+}
+
+int test_lstsize(t_list *lst, size_t size)
+{
+    int     ret;
+
+    debug("----RUN: test_size:ft_lstsize----");
+    ret = ft_lstsize(lst);
+    check(
+        ((size_t)ret == size),
+        "1. t_list length non equal."
+    );
+    debug("----FIN: test_size:ft_lstsize----");
+    return (0);
+
+error:
+    debug("expected: %ld, actual: %d", size, ret);
+    debug("----ERR: test_size:ft_lstsize----");
+    return (1);
 }
 
 int test_delone(t_list *lst)
