@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 10:27:02 by jihhan            #+#    #+#             */
-/*   Updated: 2020/10/12 19:05:13 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/10/21 15:27:43 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void                ft_lstclear(t_list **lst, void (*del)(void *))
         return;
     lst_pt = lst;
 
-    while (lst_pt)
+    while (*lst_pt)
     {
-        del((*lst_pt)->content);
+        del(((*lst_pt)->content));
         free(*lst_pt);
         lst_pt++;
     }
