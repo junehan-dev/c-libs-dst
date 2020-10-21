@@ -51,13 +51,13 @@ int    test_lstclear(const char **contents)
 {
     int         i;
     t_list      **lst_arr;
-    char        *content_pt[4] = {NULL};
+    char        *content_pt[10] = { NULL };
 
     i = 0;
     debug("----RUN: test_clear:ft_lstclear----");
     while (*(contents + i))
         i++;
-
+    
     lst_arr = (t_list **)malloc(sizeof(t_list) * (i + 1));
     *(lst_arr + i) = NULL;
 
