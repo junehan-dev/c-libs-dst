@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 09:23:56 by jihhan            #+#    #+#             */
-/*   Updated: 2020/11/10 15:52:01 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/11/10 15:53:18 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_list              *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void
         new = (res = f(next->content)) ? ft_lstnew(res) : lst->next;
         if (new != lst->next)
             new->next = lst->next;
-        del(next->cotent);
+        del(next->content);
         free(next);
         next = new->next;
     }
