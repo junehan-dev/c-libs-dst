@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 15:34:33 by jihhan            #+#    #+#             */
-/*   Updated: 2020/10/06 11:07:03 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/11/10 15:52:28 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ int                 ft_lstsize(t_list *lst)
         lst_pt = lst_pt->next;
         len++;
     }
-
     return (len);
 }
+
