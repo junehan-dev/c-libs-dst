@@ -12,15 +12,13 @@ void    test_lstiter(t_list *lst);
 void    to_upper(void *);
 int     test_lstclear(const char **contents);
 int     test_lstadd_back(t_list **lst, const char *content);
-void    test_map(t_list *lst, void *(*f)(void *), void (*del)(void *));
-
+int    test_lstmap(t_list **lst, void *(*f)(void *), void (*del)(void *));
+void    *map_f(void *content);
 
 int main(void)
 {
     t_list      *created;
-    t_list      *end;
     t_list      **lst;
-    int         i;
     const char  *contents[4] = {"1str", "2str", "3str", NULL};
 
     debug("TEST START---------");
@@ -31,26 +29,21 @@ int main(void)
     if(test_delone(created) == 1)
         exit(1);
 
-    created = ft_lstnew("lst_start");
-    end = created;
-    end->next = ft_lstnew("lst_2");
-    end = end->next;
-    end->next = ft_lstnew("lst_3");
-    end = end->next;
-    lst = malloc(sizeof(t_list) * 10);
+    created = ft_lstnew("1lst_start");
+    ft_lstadd_back(&created, ft_lstnew("2lst_2"));
+    ft_lstadd_back(&created, ft_lstnew("3lst_3"));
 
+    lst = &created;
     test_lstiter(created);
     test_lstsize(created, 3);
-    test_lstclear(contents);
-
-    
-    i = -1;
-    while (++i < 10)
-        *(lst + i) = NULL;
-
+    debug("created: %s", (char *)(created->content));
     test_lstadd_back(lst, "back added string");
     test_lstadd_back(lst, "back added string 2");
-    ft_lstclear(lst, del_content);
+
+
+    test_lstsize(created, 5);
+    test_lstmap(lst, map_f, del_content);
+    test_lstclear(contents);
 
     debug("TEST END---------");
     return (0);
@@ -59,28 +52,30 @@ int main(void)
 int     test_lstadd_back(t_list **lst, const char *content)
 {
     t_list      *to_add;
-    t_list      **lst_pt;
+    t_list      *lst_pt;
     int         i;
 
     debug("----RUN: test_lstadd_back:ft_lstadd_back----");
-    lst_pt = lst;
+    lst_pt = *lst;
     to_add = ft_lstnew((void *)content);
     ft_lstadd_back(lst, to_add);
     i = 0;
 
-    while (*lst_pt != to_add && *lst_pt != NULL)
+    debug("first string :%s", (char *)((*lst)->content));
+    debug("toadd string :%s", (char *)(to_add->content));
+    while (lst_pt != to_add && lst_pt != NULL)
     {
-        if ((*lst_pt)->content)
-            debug("%d->content: '%s'", i, (char *)((*lst_pt)->content));
+        if ((char *)(lst_pt->content) != NULL)
+            debug("%d->content: '%s'", i, (char *)(lst_pt->content));
         else
             debug("%d->content: NULL", i);
-        lst_pt++;
+        lst_pt= lst_pt->next;
         i++;
     }
 
-    debug("%d->content: '%s'", i, (char *)((*lst_pt)->content));
-    check((*lst_pt == to_add), "not added.");
-    check((*(lst_pt + 1) == NULL), "not added to back");
+    debug("%d->content: '%s'", i, (char *)(lst_pt->content));
+    check(lst_pt == to_add, "not added.");
+    check(lst_pt->next == NULL, "not added to back");
     debug("----FIN: test_lstadd_back:ft_lstadd_back----");
     return (0);
 
@@ -92,83 +87,101 @@ error:
 int    test_lstclear(const char **contents)
 {
     int         i;
-    t_list      **lst_arr;
-    char        *content_pt[10] = { NULL };
+    char        *content_pt[10] = {NULL};
+    t_list      *lst; 
+    t_list      *lst_pt;
 
     i = 0;
     debug("----RUN: test_clear:ft_lstclear----");
-    while (*(contents + i))
-        i++;
+    lst = ft_lstnew((void *)*contents);
+    lst_pt = lst;
     
-    lst_arr = (t_list **)malloc(sizeof(t_list) * (i + 1));
-    *(lst_arr + i) = NULL;
-
-    while (i--)
+    while (*(contents + i))
     {
-        *(lst_arr + i) = ft_lstnew((void *)(*(contents + i)));
+        ft_lstadd_back(&lst, ft_lstnew((void *)(*(contents+i))));
+        debug("%d : %s:%s" , i, *(contents+i), (char *)lst_pt->content);
+        lst_pt = lst_pt->next;
+        i++;
+    }
+    
+    i = 0;
+    lst_pt = lst;
+    while (i < 3)
+    {
+        debug("%s == %s",
+                (const char *)(lst_pt->content), *(contents + i));
         check(
             (strcmp(
-                (char *)((*(lst_arr + i))->content), *(contents+i)) == 0
+                (char *)(lst_pt->content), *(contents + i)) == 0
             ),
             "created content and insert non equal!"
         );
         debug("created->content: '%s' '%s':input", 
-        (char *)((*(lst_arr + i))->content), *(contents + i)
+            (char *)(lst_pt ->content), *(contents + i)
         );
-        *(content_pt + i) = ((char *)((*(lst_arr + i))->content));
+        *(content_pt + i) = ((char *)(lst_pt->content));
         debug("ptcopied : %s, %p == %p", 
             *(content_pt + i),
             *(content_pt + i),
-            (*(lst_arr + i))->content
+            (lst_pt->content)
         );
+        lst_pt = lst_pt->next;
+        debug("next:%s", (char *)lst_pt->content);
+        i++;
     }
 
     i = 0;
-    ft_lstclear(lst_arr, del_content);
+    ft_lstclear(&lst, del_content);
     while (*(content_pt + i)) 
     {
         debug("%d str: %s", i, *(content_pt + i));
-        check(
-            strcmp(*(content_pt + i), *(contents+i)) != 0,
-            "string is no diff!"
+        check(!(contents+i),
+            "string is NOT NULL!"
         );
         i++;
     }
-    check(sizeof(*lst_arr) != sizeof(t_list), "freed error");
+    check(!(lst), "freed error");
     debug("----FIN: test_clear:ft_lstclear----");
     return (0);
     
 error:
-    i = 3;
-    while(i--)
-        ft_lstdelone(*(lst_arr + i), del_content);
-
-    free(lst_arr);
+    ft_lstclear(&lst, del_content);
     debug("----ERR: test_clear:ft_lstclear----");
     return 1;
 }
 
-
-/*
-void    test_addback(const char *content)
+int    test_lstmap(t_list **lst, void *(*f)(void *), void (*del)(void *))
 {
-    t_list **lstarr;
+    t_list *ret;
+    t_list *ret_pt;
 
-    lstarr = malloc(sizeof(t_list) * 4);
-    *(lstarr + 3) = NULL;
-    *(lstarr + 1
+    char *keys[] = {"1LST_START", "2_LST2", "3_LST3"};
+    int i;
+
+    i = 0;
+    debug("----RUN: test_map:ft_lstmap----");
+    ret = ft_lstmap(*lst, f, del);
+    ret_pt = ret;
+    
+    while (i<3)
+    {
+        debug("%d: %s|%s", i, (const char*)(ret_pt->content), (const char *)(keys[i]));
+        check(strcmp((const char*)(ret_pt->content), (const char *)(keys[i])) == 0,
+            "result non equal"
+        );
+        ret_pt = ret_pt->next;
+        i++;
+    }
+    check(ret_pt == NULL, "non null!");
+    debug("----FIN: test_map:ft_lstmap----");
+    ft_lstclear(&ret, del_content);
+    return (EXIT_SUCCESS);
+error:
+    debug("----ERR: test_map:ft_lstmap----");
+    ft_lstclear(&ret, del_content);
+    return (EXIT_FAILURE);
 
 }
-*/
-
-/*
-void    test_map(t_list *lst, void *(*f)(void *), void (*del)(void *))
-{
-    t_list ret;
-
-    ret = ft_lstmap(lst, f, del);
-}
-*/
 
 void    to_upper(void *content)
 {
@@ -222,12 +235,8 @@ void test_lstiter(t_list *lst)
 int test_lstsize(t_list *lst, size_t size)
 {
     int     ret;
-    t_list  *cur;
-    t_list  *next;
 
     debug("----RUN: test_size:ft_lstsize----");
-    cur = lst;
-    next = cur -> next;
     ret = ft_lstsize(lst);
     check(
         ((size_t)ret == size),
@@ -235,26 +244,12 @@ int test_lstsize(t_list *lst, size_t size)
     );
     debug("----FIN: test_size:ft_lstsize----");
 
-    while (cur->next)
-    {
-        free(cur);
-        cur = next;
-        next = cur->next;
-    }
-    free(cur);
-
     return (0);
 
 error:
     debug("expected: %ld, actual: %d", size, ret);
     debug("----ERR: test_size:ft_lstsize----");
 
-    while (cur)
-    {
-        free(cur);
-        cur = next;
-        next = next->next;
-    }
     return (1);
 }
 
@@ -322,4 +317,18 @@ error:
     free(created);
     debug("----ERR: test_creat:ft_lstnew----");
     return (NULL);
+}
+
+void    *map_f(void *content)
+{
+    const char    *content_pt;
+
+    if (content)
+    {
+        content_pt = (const char *)content;
+        if ('0' <= *content_pt && '3' >= *content_pt)
+            return content;
+    }
+    return (NULL);
+
 }
