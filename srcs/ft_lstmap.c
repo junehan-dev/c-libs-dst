@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 09:23:56 by jihhan            #+#    #+#             */
-/*   Updated: 2020/10/12 18:53:27 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/11/10 15:47:42 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,33 @@
 
 t_list              *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-    t_list      *lst_pt;
-    t_list      *buf;
-    t_list      **lst_arr;
-    int         i;
+    t_list  *next;
+    t_list  *new;
+    void    *res;
 
-    lst_pt = lst;
-    lst_arr = (t_list **)malloc(sizeof(t_list *) * (ft_lstsize(lst) + 1));
-
-    if (!lst_arr || !lst)
+    if (!lst || !f || !del)
         return (NULL);
 
-    while (lst_pt)
-    {
-        buf = NULL;
-        if (!f(lst_pt->content))
-        {
-            buf = lst_pt->next;
-            ft_lstdelone(lst_pt, del);
-        } else
-            ft_lstadd_back(lst_arr, lst_pt); 
-        lst_pt = (lst_pt) ? lst_pt->next : buf;
-    }
-    ft_lstadd_back(lst_arr, NULL);
- 
-    lst_pt = *lst_arr;
-    i = 1;
+    next = lst->next;
 
-    while (lst_pt)
+    while (next)
     {
-        lst_pt->next = *(lst_arr + i++);
-        lst_pt = lst_pt->next;
+        lst->next = next->next;
+        new = (res = f(next->content)) ? ft_lstnew(res) : lst->next;
+        if (new != lst->next)
+            new->next = lst->next;
+        del(next->cotent);
+        free(next);
+        next = new->next;
     }
-    lst_pt = *lst_arr;
-    free(lst_arr);
-    return (lst_pt);
+
+    new = (res = f(lst->content)) ? ft_lstnew(res) : lst->next;
+
+    if (new != lst->next)
+        new->next = lst->next;
+
+    del(lst);
+    free(lst);
+    return (new);
 }
+
