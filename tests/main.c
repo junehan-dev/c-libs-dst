@@ -18,7 +18,6 @@ void    *map_f(void *content);
 int main(void)
 {
     t_list      *created;
-    const char  *contents[4] = {"1str", "2str", "3str", NULL};
 
     debug("TEST START---------");
 
@@ -40,8 +39,6 @@ int main(void)
 
     test_lstsize(created, 5);
     test_lstmap(&created, map_f, del_content);
-    test_lstclear(contents);
-
     debug("TEST END---------");
     return (0);
 }
@@ -152,7 +149,7 @@ int    test_lstmap(t_list **lst, void *(*f)(void *), void (*del)(void *))
     t_list *ret;
     t_list *ret_pt;
 
-    char *keys[] = {"1LST_START", "2_LST2", "3_LST3"};
+    char *keys[4] = {"1LST_START", "2LST_2\0", "3LST_3\0", NULL};
     int i;
 
     i = 0;
@@ -164,18 +161,20 @@ int    test_lstmap(t_list **lst, void *(*f)(void *), void (*del)(void *))
     
     while (i<3)
     {
-        debug("%d: %s|%s", i, (const char*)(ret_pt->content), (const char *)(keys[i]));
+        debug("%d: '%s|%s'", i, (const char*)(ret_pt->content), (const char *)(keys[i]));
         check(strcmp((const char*)(ret_pt->content), (const char *)(keys[i])) == 0,
             "result non equal"
         );
         ret_pt = ret_pt->next;
         i++;
     }
-    check(ret_pt == NULL, "non null!");
     debug("----FIN: test_map:ft_lstmap----");
     ft_lstclear(&ret, del_content);
+    check(ret_pt == NULL, "non null!");
     return (EXIT_SUCCESS);
 error:
+    debug("%d: %s|%s", i, (const char*)(ret_pt->content), (const char *)(keys[i]));
+    debug("%d", strcmp((const char*)(ret_pt->content), (const char *)(keys[i])));
     debug("----ERR: test_map:ft_lstmap----");
     ft_lstclear(&ret, del_content);
     return (EXIT_FAILURE);
@@ -287,6 +286,7 @@ error:
 
 void    del_content(void *content)
 {
+    debug("del: -%s-", (char *)content);
     free((char *)content);
 }
 

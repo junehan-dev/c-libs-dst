@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 09:23:56 by jihhan            #+#    #+#             */
-/*   Updated: 2020/11/11 18:14:18 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/11/11 18:51:01 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ t_list              *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void
         next = cur;
     }
 
+    back->next = cur;
     return (lst);
 }
 
