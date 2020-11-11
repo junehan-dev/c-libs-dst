@@ -18,7 +18,6 @@ void    *map_f(void *content);
 int main(void)
 {
     t_list      *created;
-    t_list      **lst;
     const char  *contents[4] = {"1str", "2str", "3str", NULL};
 
     debug("TEST START---------");
@@ -33,16 +32,14 @@ int main(void)
     ft_lstadd_back(&created, ft_lstnew("2lst_2"));
     ft_lstadd_back(&created, ft_lstnew("3lst_3"));
 
-    lst = &created;
     test_lstiter(created);
     test_lstsize(created, 3);
     debug("created: %s", (char *)(created->content));
-    test_lstadd_back(lst, "back added string");
-    test_lstadd_back(lst, "back added string 2");
-
+    test_lstadd_back(&created, "back added string");
+    test_lstadd_back(&created, "back added string 2");
 
     test_lstsize(created, 5);
-    test_lstmap(lst, map_f, del_content);
+    test_lstmap(&created, map_f, del_content);
     test_lstclear(contents);
 
     debug("TEST END---------");
@@ -161,6 +158,8 @@ int    test_lstmap(t_list **lst, void *(*f)(void *), void (*del)(void *))
     i = 0;
     debug("----RUN: test_map:ft_lstmap----");
     ret = ft_lstmap(*lst, f, del);
+    debug("%s", (char *)ret->content);
+    debug("%s", (char *)(ret->next)->content);
     ret_pt = ret;
     
     while (i<3)
@@ -326,8 +325,12 @@ void    *map_f(void *content)
     if (content)
     {
         content_pt = (const char *)content;
-        if ('0' <= *content_pt && '3' >= *content_pt)
+        debug("map_f:%c", *content_pt);
+        if ('0' <= *content_pt && '4' >= *content_pt)
+        {
+            debug("passed: %s", content_pt);
             return content;
+        }
     }
     return (NULL);
 

@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 09:23:56 by jihhan            #+#    #+#             */
-/*   Updated: 2020/11/10 19:18:42 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/11/11 17:48:42 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,44 @@ t_list              *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void
 {
     t_list  *next;
     t_list  *new;
-    void    *res;
+    t_list  *res;
+    t_list  *ret;
 
     if (!lst || !f || !del)
         return (NULL);
-    next = lst->next;
 
-    while (next)
+    ret = NULL;
+    new = lst;
+    next = new;
+
+    while (!ret && new)
     {
-        lst->next = next->next;
-        new = (res = f(next->content)) ? ft_lstnew(res) : lst->next;
-        if (new != lst->next)
+        new = (res = f(new->content)) ? ft_lstnew(res) : next;
+        if (new != next)
         {
-            new->next = lst->next;
-            lst->next = new;
+            new->next = next->next;
+            ret = new;
         }
+        new = next->next;
         del(next->content);
         free(next);
-        next = new->next;
+        next = new;
     }
-    new = (res = f(lst->content)) ? ft_lstnew(res) : lst->next;
 
-    if (new != lst->next)
-        new->next = lst->next;
-    del(lst->content);
-    free(lst);
-    return (new);
+    if (!new)
+        return (ret);
+
+    while (new)
+    {
+        new = (res = f(new->content)) ? ft_lstnew(res) : next;
+        if (new != next)
+            new->next = next->next;
+        new = next->next;
+        del(next->content);
+        free(next);
+        next = new;
+    }
+
+    return (ret);
 }
 
