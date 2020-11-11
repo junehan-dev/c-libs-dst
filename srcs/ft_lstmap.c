@@ -6,7 +6,7 @@
 /*   By: jihhan <junehan.dev@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 09:23:56 by jihhan            #+#    #+#             */
-/*   Updated: 2020/11/11 17:48:42 by jihhan           ###   ########.fr       */
+/*   Updated: 2020/11/11 18:14:18 by jihhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,50 @@
 
 t_list              *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-    t_list  *next;
-    t_list  *new;
-    t_list  *res;
-    t_list  *ret;
+    void    *res;
+    t_list  *cur, *back, *next;
 
     if (!lst || !f || !del)
         return (NULL);
 
-    ret = NULL;
-    new = lst;
-    next = new;
+    back = NULL;
+    cur = lst;
+    next = cur; 
 
-    while (!ret && new)
+    while (!back && cur)
     {
-        new = (res = f(new->content)) ? ft_lstnew(res) : next;
-        if (new != next)
+        cur = (res = f(cur->content)) ? ft_lstnew(res) : next;
+        if (cur != next)
         {
-            new->next = next->next;
-            ret = new;
+            cur->next = next->next;
+            back = cur;
         }
-        new = next->next;
+        cur = next->next;
         del(next->content);
         free(next);
-        next = new;
+        next = cur;
     }
 
-    if (!new)
-        return (ret);
+    lst = back;
 
-    while (new)
+    if (!cur)
+        return (lst);
+
+    while (next)
     {
-        new = (res = f(new->content)) ? ft_lstnew(res) : next;
-        if (new != next)
-            new->next = next->next;
-        new = next->next;
+        cur = (res = f(cur->content)) ? ft_lstnew(res) : next;
+        if (cur != next)
+        {
+            back->next = cur;
+            cur->next = next->next;
+            back = cur;
+        }
+        cur = next->next;
         del(next->content);
         free(next);
-        next = new;
+        next = cur;
     }
 
-    return (ret);
+    return (lst);
 }
 

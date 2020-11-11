@@ -19,6 +19,7 @@ $(NAME): $(OBJECTS)
 test: $(TESTS)
 	$(CC) -Wall -Werror -Wextra -Iincludes -g tests/main.c $(NAME) -o tests/test.out
 	./tests/test.out
+	/bin/rm -f ./tests/test.out
 
 .PHONY: clean
 clean:
