@@ -43,53 +43,53 @@ Functions
 - ``t_list            *ft_lstnew(void *content);``
 
    - descriptions: allocates with ``malloc`` and return new element. content initialized with content parameter, and next is to ``null``.
-   - external functs: ``malloc``
+   - external func: ``malloc``
    - returns: ``t_list`` created.
 
 - ``void                ft_lstadd_front(t_list **lst, t_list *new);``
 
    - descriptions: Adds the element come from parameter ``new`` to beginning of ``lst``.
-   - external functs: None
+   - external func: None
    - returns: None
 
 - ``int                 ft_lstsize(t_list *lst);``
 
    - DESCRIPTIONS: Counts the number of elements in a list.
-   - External functs: None
+   - External func: None
    - RETURNS: ``int`` count of result.
 
 - ``t_list              *ft_lstlast(t_list *lst);``
 
    - descriptions: Point last element from lst.
-   - external functs: None
+   - external func: None
    - returns: ``t_list`` which next is NULL.
 
 - ``void                ft_lstadd_back(t_list **lst, t_list *new);``
 
    - descriptions: Adds the element come from parameter ``new`` to end of ``lst``.
-   - external functs: None
+   - external func: None
    - returns: None
 
 - ``void                ft_lstdelone(t_list *lst, void (*del)(void *));``
 
    - descriptions: argument lst is target element to free. ``del`` is function pointer used to delete content of the element. next must not be freed.
-   - external functs: ``free``
+   - external func: ``free``
    - returns: None
 
 - ``void                ft_lstclear(t_list **lst, void (*del)(void *));``
 
    - descriptions: Deletes and frees given element and every successors of that element. the pointer to a list must be set to NULL at last.
-   - external functs: ``free``
+   - external func: ``free``
    - returns: None
 
 - ``void                ft_lstiter(t_list *lst, void (*f)(void *));`` 
 
    - descriptions: Deletes and frees given element and every successors of that element. the pointer to a list must be set to NULL at last.
-   - external functs: ``free``
+   - external func: ``free``
    - returns: None
 
 - ``t_list              *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));``
 
    - descriptions: iterates function ``f`` to each content to lst. and if needed ``del`` is used to delete content.
-   - external functs: ``malloc`` ``free``
+   - external func: ``malloc`` ``free``
    - returns: malloc fail on ``NULL`` or ``lst``
