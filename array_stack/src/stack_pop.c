@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   make_stack.c                                       :+:      :+:    :+:   */
+/*   stack_pop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junehan <junehan.dev@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/14 00:17:32 by junehan           #+#    #+#             */
-/*   Updated: 2022/05/14 21:28:31 by junehan          ###   ########.fr       */
+/*   Created: 2022/05/14 20:52:36 by junehan           #+#    #+#             */
+/*   Updated: 2022/05/14 21:22:15 by junehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "lib_stack.h"
 
-struct stack 	*make_stack(size_t siz, unsigned int len)
+unsigned int	stack_pop(struct stack *s, void *dest)
 {
-	struct stack	*ret;
+	char			*dest_data;
+	const char		*top;
+	unsigned int	n;
 
-	ret			= malloc(sizeof(struct stack));
-	ret->siz	= siz;
-	ret->len	= len;
-	ret->cur	= 0;
-	ret->data	= (void *)malloc(siz * len);
+	if (!s->cur)
+		return (0);
 
-	return (ret);	
+	n = 0;
+	(s->cur)--;
+	dest_data = (char *)dest;
+	top = (const char *)(s->data) + (s->cur) * (s->siz);
+	while (n < (s->siz)) {
+		*(dest_data + n) = *(top + n);
+		n++;
+	}
+
+	return (n);
 }
 
